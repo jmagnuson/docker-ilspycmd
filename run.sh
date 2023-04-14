@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=SC2046,SC2086
+
 DLL=$1
 PDB=${1//.dll/.pdb} # | sed s/\.dll/\.pdb/g)
 OUT=$2
@@ -8,7 +10,7 @@ docker run \
   --volume "$PDB:/data/in/$(basename $PDB)" \
   --volume "$OUT:/data/out" \
   --rm \
-  ilspycmd:1.0-dev \
+  jessenich91/ilspycmd:7.2.1 \
   --outputdir "/data/out" \
   --use-varnames-from-pdb \
   --generate-pdb \
