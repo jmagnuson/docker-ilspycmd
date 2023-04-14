@@ -4,5 +4,5 @@
 
 ```bash
 bash ./build.sh
-bash ./run.sh < /path/to/binary > < /output/path >
+bash ./run.sh /path/to/binary /output/path
 ```
