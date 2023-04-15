@@ -14,7 +14,7 @@ __main() {
     ${USE_PDB:+--volume $PDB:/data/in/$(basename $PDB)} \
     --volume "$OUT:/data/out" \
     --rm \
-    jessenich/ilspycmd:7.2.1 \
+    ghcr.io/jessenich/ilspycmd:7.2.1 \
     --outputdir "/data/out" \
     ${USE_PDB:+--use-varnames-from-pdb} \
     ${USE_PDB:+--generate-pdb} \
