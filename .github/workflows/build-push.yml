@@ -2,6 +2,9 @@ name: Publish Docker Image
 
 on:
   push:
+    branches:
+      - 'main'
+      - 'preview'
     tags:
       - 'v*'
 
@@ -45,7 +48,7 @@ jobs:
       id: highest_tag_check
       run: |
         git fetch --tags
-        HIGHEST_TAG=$(git tag | sort -V | tail -n 1)
+        HIGHEST_TAG=$(git tag | grep -Ev 'preview|prelease' | sort -V | tail -n 1)
         if [ "${GITHUB_REF#refs/tags/}" == "$HIGHEST_TAG" ]; then
           echo "::set-output name=is_highest::true"
         else
@@ -62,6 +65,9 @@ jobs:
         tags: |
           type=semver,pattern={{version}}
           type=semver,pattern={{major}}.{{minor}}
+          type=match,pattern=v(.*),group=1
+          type=sha,format=long
+          type=ref,event=branch
         flavor: latest=${{ steps.highest_tag_check.outputs.is_highest }}
 
     - name: Build and push Docker image
