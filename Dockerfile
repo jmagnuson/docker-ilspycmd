@@ -1,17 +1,19 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0 as build
+FROM mcr.microsoft.com/dotnet/sdk:7.0 as build
+
+ARG DEBIAN_FRONTEND="noninteractive"
+ENV DOTNET_CLI_TELEMETRY_OPTOUT 1
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       jq \
       curl && \
   mkdir -p /workspace/src /workspace/publish && \
-  VERSION="$(curl -s https://api.github.com/repos/icsharpcode/ilspy/tags | \
-    jq -r '[ .[] | select(.name | test("^(?!.*preview)(?!.*rc).*$")) | .name ] | first')" && \
   git config --global advice.detachedHead false && \
+  VERSION="$(curl -fsSL 'https://api.github.com/repos/icsharpcode/ilspy/releases/latest' | jq -r .tag_name)" && \
   git clone -b "$VERSION" https://github.com/icsharpcode/ilspy.git /workspace/src && \
-  dotnet publish /workspace/src/ICSharpCode.Decompiler.Console/ICSharpCode.Decompiler.Console.csproj \
+  dotnet publish /workspace/src/ICSharpCode.ILSpyCmd/ICSharpCode.ILSpyCmd.csproj \
     --configuration Release \
-    --output /workspace/publish/ \
+    --output /workspace/publish \
     --nologo \
     --runtime linux-musl-x64 \
     --self-contained \

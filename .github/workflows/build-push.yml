@@ -2,6 +2,9 @@ name: Publish Docker Image
 
 on:
   push:
+    branches:
+      - 'main'
+      - 'preview'
     tags:
       - 'v*'
 
@@ -62,14 +65,15 @@ jobs:
         tags: |
           type=semver,pattern={{version}}
           type=semver,pattern={{major}}.{{minor}}
-          type=sha
+          type=match,pattern=v(.*),group=1
+          type=sha,format=long
+          type=ref,event=branch
         flavor: latest=${{ steps.highest_tag_check.outputs.is_highest }}
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
       with:
         context: .
-        platforms: ${{ steps.setup-buildx.outputs.nodes.platforms }}
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
