@@ -3,7 +3,7 @@
 # shellcheck disable=SC2046,SC2086
 
 __main() {
-  DLL=$(realpath "./$1")
+  DLL=$(realpath "$1")
   PDB=${1//.dll/.pdb}
   OUT=$2
 
@@ -14,7 +14,7 @@ __main() {
     ${USE_PDB:+--volume $PDB:/data/in/$(basename $PDB)} \
     --volume "$OUT:/data/out" \
     --rm \
-    ghcr.io/jessenich/ilspycmd:8.0-preview4 \
+    ghcr.io/jessenich/ilspycmd:9.0-preview2 \
     --outputdir "/data/out" \
     ${USE_PDB:+--use-varnames-from-pdb} \
     ${USE_PDB:+--generate-pdb} \

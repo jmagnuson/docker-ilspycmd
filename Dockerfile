@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0 as build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 as build
 
 ARG DEBIAN_FRONTEND="noninteractive"
 ENV DOTNET_CLI_TELEMETRY_OPTOUT 1
@@ -19,7 +19,6 @@ RUN apt-get update && \
     --self-contained \
     --verbosity quiet \
     --property:PublishSingleFile=true \
-    --property:PublishTrimmed=true \
     --property:PublishReadyToRun=true \
     --property:PackAsTool=false \
     --property:DebugType=none \

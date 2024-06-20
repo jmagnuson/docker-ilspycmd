@@ -7,5 +7,5 @@ VERSION=${VERSION/v/}
 docker buildx build \
   -t "ghcr.io/jessenich/ilspycmd:$VERSION" \
   --load \
-  --file prerelease.Dockerfile \
+  --file Dockerfile \
   .
